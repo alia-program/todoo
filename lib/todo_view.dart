@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class TodoView extends StatefulWidget {
   const TodoView({super.key});
@@ -46,13 +47,19 @@ class _TodoViewState extends State<TodoView> {
           //リストのアイテムたちを生成
           children: <Widget>[
             for (var item in _items)
-              Dismissible(
+              Slidable(
                 key: ValueKey(item),
-                onDismissed: (direction) {
-                  setState(() {
-                    _items.remove(item);
-                  });
-                },
+                endActionPane:
+                    ActionPane(motion: const StretchMotion(), children: [
+                  SlidableAction(
+                    label: '削除',
+                    backgroundColor: Colors.red,
+                    icon: Icons.delete,
+                    onPressed: (context) {
+                      _items.remove(item);
+                    },
+                  ),
+                ]),
                 child: Row(
                   key: ValueKey(item),
                   //複数のviewを配置
