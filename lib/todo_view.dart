@@ -46,50 +46,58 @@ class _TodoViewState extends State<TodoView> {
           //リストのアイテムたちを生成
           children: <Widget>[
             for (var item in _items)
-              Row(
+              Dismissible(
                 key: ValueKey(item),
-                //複数のviewを配置
-                children: <Widget>[
-                  //Expandedは最大限広げる
-                  Expanded(
-                    //Containerは色・サイズ・childを指定できる
-                    child: Container(
-                      //線の表示は同じ箱に入れて同じ範囲適用
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                              color: Color.fromARGB(255, 173, 173, 173)),
+                onDismissed: (direction) {
+                  setState(() {
+                    _items.remove(item);
+                  });
+                },
+                child: Row(
+                  key: ValueKey(item),
+                  //複数のviewを配置
+                  children: <Widget>[
+                    //Expandedは最大限広げる
+                    Expanded(
+                      //Containerは色・サイズ・childを指定できる
+                      child: Container(
+                        //線の表示は同じ箱に入れて同じ範囲適用
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                                color: Color.fromARGB(255, 173, 173, 173)),
+                          ),
                         ),
-                      ),
-                      //入力画面
-                      child: EditableText(
-                        controller: item._controller,
-                        onChanged: (newText) {
-                          setState(() {
-                            item.text = newText;
-                            index = _items.indexOf(item);
-                          });
-                        },
-                        focusNode: FocusNode(),
-                        style: const TextStyle(
-                          color: Color.fromARGB(255, 150, 150, 150),
-                          fontSize: 40,
+                        //入力画面
+                        child: EditableText(
+                          controller: item._controller,
+                          onChanged: (newText) {
+                            setState(() {
+                              item.text = newText;
+                              index = _items.indexOf(item);
+                            });
+                          },
+                          focusNode: FocusNode(),
+                          style: const TextStyle(
+                            color: Color.fromARGB(255, 150, 150, 150),
+                            fontSize: 40,
+                          ),
+                          cursorColor: Colors.black,
+                          backgroundCursorColor: Colors.black,
                         ),
-                        cursorColor: Colors.black,
-                        backgroundCursorColor: Colors.black,
                       ),
                     ),
-                  ),
 
-                  //padding付きのアイコン
-                  const Padding(
-                    padding: EdgeInsets.all(15),
-                    child: Icon(
-                      Icons.reorder,
-                      size: 40,
-                    ),
-                  )
-                ],
+                    //padding付きのアイコン
+                    const Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Icon(
+                        Icons.reorder,
+                        size: 40,
+                      ),
+                    )
+                  ],
+                ),
               ),
           ],
         ),
