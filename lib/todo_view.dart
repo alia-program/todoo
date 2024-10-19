@@ -20,7 +20,7 @@ class ItemData {
 class _TodoViewState extends State<TodoView> {
   //作成した番号を受け取ったらintにいれる
   final List<ItemData> _items = List<ItemData>.generate(
-      20, (index) => ItemData(index, '', TextEditingController(text: "")));
+      3, (index) => ItemData(index, '', TextEditingController(text: "")));
   String content = "";
   int index = 0;
   @override
@@ -49,17 +49,19 @@ class _TodoViewState extends State<TodoView> {
             for (var item in _items)
               Slidable(
                 key: ValueKey(item),
-                endActionPane:
-                    ActionPane(motion: const StretchMotion(), children: [
-                  SlidableAction(
-                    label: '削除',
-                    backgroundColor: Colors.red,
-                    icon: Icons.delete,
-                    onPressed: (context) {
-                      _items.remove(item);
-                    },
-                  ),
-                ]),
+                endActionPane: ActionPane(
+                    extentRatio: 0.2,
+                    motion: const StretchMotion(),
+                    children: [
+                      SlidableAction(
+                        label: '削除',
+                        backgroundColor: Colors.red,
+                        icon: Icons.delete,
+                        onPressed: (context) {
+                          _removeItem(item);
+                        },
+                      ),
+                    ]),
                 child: Row(
                   key: ValueKey(item),
                   //複数のviewを配置
@@ -110,5 +112,11 @@ class _TodoViewState extends State<TodoView> {
         ),
       ),
     );
+  }
+
+  void _removeItem(ItemData item) {
+    setState(() {
+      _items.remove(item);
+    });
   }
 }
