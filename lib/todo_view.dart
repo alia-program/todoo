@@ -7,8 +7,28 @@ class TodoView extends StatefulWidget {
   State<TodoView> createState() => _TodoViewState();
 }
 
+class ItemData {
+  int id;
+  String? text;
+
+  TextEditingController _controller;
+  //コンストラクタの定型文
+  ItemData(this.id, this.text, this._controller);
+}
+
 class _TodoViewState extends State<TodoView> {
-  final _items = Iterable.generate(20).toList();
+  //作成した番号を受け取ったらintにいれる
+  final List<ItemData> _items = List<ItemData>.generate(
+      20, (index) => ItemData(index, '', TextEditingController(text: "")));
+  String content = "";
+  int index = 0;
+  @override
+  void initState() {
+    super.initState();
+
+    _items[index]._controller = TextEditingController(text: _items[index].text);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,6 +43,7 @@ class _TodoViewState extends State<TodoView> {
               _items.insert(newIndex, item);
             });
           },
+          //リストのアイテムたちを生成
           children: <Widget>[
             for (var item in _items)
               Row(
@@ -40,10 +61,15 @@ class _TodoViewState extends State<TodoView> {
                               color: Color.fromARGB(255, 173, 173, 173)),
                         ),
                       ),
-                      //TextField
+                      //入力画面
                       child: EditableText(
-                        controller:
-                            TextEditingController(text: item.toString()),
+                        controller: item._controller,
+                        onChanged: (newText) {
+                          setState(() {
+                            item.text = newText;
+                            index = _items.indexOf(item);
+                          });
+                        },
                         focusNode: FocusNode(),
                         style: const TextStyle(
                           color: Color.fromARGB(255, 150, 150, 150),
@@ -54,6 +80,8 @@ class _TodoViewState extends State<TodoView> {
                       ),
                     ),
                   ),
+
+                  //padding付きのアイコン
                   const Padding(
                     padding: EdgeInsets.all(15),
                     child: Icon(
