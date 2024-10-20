@@ -33,7 +33,10 @@ class _TodoViewState extends State<TodoView> {
   @override
   void initState() {
     super.initState();
-    _items[index]._controller = TextEditingController(text: _items[index].text);
+    if (_items.isNotEmpty) {
+      _items[index]._controller =
+          TextEditingController(text: _items[index].text);
+    }
   }
 
   @override

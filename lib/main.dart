@@ -35,7 +35,18 @@ class MyHomePage extends StatelessWidget {
               appBar: AppBar(
                 title: const Text("first"),
               ),
-              body: const Center(child: TodoView()),
+              body: Center(
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) {
+                          return const TodoView();
+                        }),
+                      );
+                    },
+                    child: Text('trance')),
+              ),
             )));
   }
 }
