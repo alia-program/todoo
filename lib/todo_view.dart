@@ -23,6 +23,13 @@ class _TodoViewState extends State<TodoView> {
       3, (index) => ItemData(index, '', TextEditingController(text: "")));
   String content = "";
   int index = 0;
+
+  @override
+  void dispose() {
+    _items[index]._controller.dispose();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
