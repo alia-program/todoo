@@ -44,8 +44,11 @@ class _TodoViewState extends State<TodoView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SizedBox(
+      backgroundColor: const Color.fromARGB(255, 248, 248, 248),
+      body: Container(
         height: 270,
+        margin: const EdgeInsets.all(10),
+        color: Colors.white,
         child: Column(
           children: [
             Container(
@@ -140,6 +143,7 @@ class _TodoViewState extends State<TodoView> {
                 Expanded(
                   //Containerは色・サイズ・childを指定できる
                   child: Container(
+                    margin: const EdgeInsets.all(5),
                     //線の表示は同じ箱に入れて同じ範囲適用
                     decoration: const BoxDecoration(
                       border: Border(
@@ -169,7 +173,7 @@ class _TodoViewState extends State<TodoView> {
 
                 //padding付きのアイコン
                 const Padding(
-                  padding: EdgeInsets.all(15),
+                  padding: EdgeInsets.all(10),
                   child: Icon(
                     Icons.reorder,
                     size: 30,
