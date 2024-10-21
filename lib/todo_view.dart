@@ -24,12 +24,14 @@ class _TodoViewState extends State<TodoView> {
   int index = 0;
   int id = 0;
 
+  //コントローラーの破棄
   @override
   void dispose() {
     _items[index]._controller.dispose();
     super.dispose();
   }
 
+  //コントローラーの更新
   @override
   void initState() {
     super.initState();
@@ -44,21 +46,39 @@ class _TodoViewState extends State<TodoView> {
     return Scaffold(
       body: Column(
         children: [
-          Row(
-            children: [
-              OutlinedButton(
+          Container(
+            color: const Color.fromARGB(255, 128, 185, 255),
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(Icons.close),
+                  color: const Color.fromRGBO(255, 255, 255, 1),
+                ),
+                const Expanded(
+                    child: Center(
+                  child: Text(
+                    'TODO',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 35),
+                  ),
+                )),
+                IconButton(
                   onPressed: () {
                     setState(() {
                       _addItem();
                     });
                   },
-                  child: const Text('追加')),
-              OutlinedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('削除')),
-            ],
+                  icon: const Icon(Icons.add),
+                  color: const Color.fromRGBO(255, 255, 255, 1),
+                ),
+              ],
+            ),
           ),
           Expanded(
             child: _addListView(),
