@@ -43,55 +43,52 @@ class _TodoViewState extends State<TodoView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 248, 248, 248),
-      body: Container(
-        height: 270,
-        margin: const EdgeInsets.all(10),
-        color: Colors.white,
-        child: Column(
-          children: [
-            Container(
-              color: const Color.fromARGB(255, 128, 185, 255),
-              padding: const EdgeInsets.all(5),
-              child: Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(Icons.close),
-                    color: const Color.fromRGBO(255, 255, 255, 1),
-                    iconSize: 30,
+    return Container(
+      height: 270,
+      margin: const EdgeInsets.all(10),
+      color: Colors.white,
+      child: Column(
+        children: [
+          Container(
+            color: const Color.fromARGB(255, 128, 185, 255),
+            padding: const EdgeInsets.all(5),
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(Icons.close),
+                  color: const Color.fromRGBO(255, 255, 255, 1),
+                  iconSize: 30,
+                ),
+                const Expanded(
+                    child: Center(
+                  child: Text(
+                    'TODO',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 35),
                   ),
-                  const Expanded(
-                      child: Center(
-                    child: Text(
-                      'TODO',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 35),
-                    ),
-                  )),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _addItem();
-                      });
-                    },
-                    icon: const Icon(Icons.add),
-                    color: const Color.fromRGBO(255, 255, 255, 1),
-                    iconSize: 35,
-                  ),
-                ],
-              ),
+                )),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _addItem();
+                    });
+                  },
+                  icon: const Icon(Icons.add),
+                  color: const Color.fromRGBO(255, 255, 255, 1),
+                  iconSize: 35,
+                ),
+              ],
             ),
-            Expanded(
-              child: _addListView(),
-            )
-          ],
-        ),
+          ),
+          Expanded(
+            child: _addListView(),
+          )
+        ],
       ),
     );
   }
@@ -135,6 +132,7 @@ class _TodoViewState extends State<TodoView> {
                     },
                   ),
                 ]),
+            //rowは横並びの配列を作れる
             child: Row(
               key: ValueKey(item),
               //複数のviewを配置

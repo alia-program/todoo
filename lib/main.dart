@@ -17,36 +17,64 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: MyHomePage(),
+      home: const MemoPage(),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MemoPage extends StatefulWidget {
+  const MemoPage({super.key});
+
+  @override
+  State<MemoPage> createState() => _MemoPageState();
+}
+
+class _MemoPageState extends State<MemoPage> {
+  final focusNode = FocusNode();
+  final List<Widget> widgetList = [];
+
   @override
   Widget build(BuildContext context) {
-    final focusNode = FocusNode();
     return Focus(
         focusNode: focusNode,
         child: GestureDetector(
             onTap: focusNode.requestFocus,
             onLongPress: focusNode.requestFocus,
             child: Scaffold(
-              appBar: AppBar(
-                title: const Text("first"),
-              ),
-              body: Center(
-                child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) {
-                          return const TodoView();
-                        }),
-                      );
-                    },
-                    child: Text('trance')),
-              ),
-            )));
+                appBar: AppBar(
+                  title: const Text("first"),
+                ),
+                body: Column(
+                  children: [
+                    Row(
+                      children: [
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) {
+                                  return const TodoView();
+                                }),
+                              );
+                            },
+                            child: const Text('trance')),
+                        ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                widgetList.add(const Column(
+                                  children: [TodoView(), TextField()],
+                                ));
+                                print(widgetList.length);
+                              });
+                            },
+                            child: const Text('追加')),
+                      ],
+                    ),
+                    Expanded(
+                        child: SingleChildScrollView(
+                      child: Column(children: widgetList),
+                    ))
+                  ],
+                ))));
   }
 }
