@@ -42,34 +42,47 @@ class _MemoPageState extends State<MemoPage> {
             onLongPress: focusNode.requestFocus,
             child: Scaffold(
                 appBar: AppBar(
-                  title: const Text("first"),
+                  backgroundColor: const Color.fromARGB(255, 143, 195, 255),
+                  actions: [
+                    IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.arrow_back_ios,
+                          color: Colors.white,
+                        )),
+                    const Expanded(
+                        child: Center(
+                      child: Text(
+                        'TODO',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 35),
+                      ),
+                    )),
+                    IconButton(
+                        onPressed: () {
+                          setState(() {
+                            widgetList.add(Column(
+                              children: [
+                                TodoView(
+                                  //constするとitem追加できない注意
+                                  items: [],
+                                ),
+                                const TextField()
+                              ],
+                            ));
+                            print(widgetList.length);
+                          });
+                        },
+                        icon: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        ))
+                  ],
                 ),
                 body: Column(
                   children: [
-                    Row(
-                      children: [
-                        ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) {
-                                  return const TodoView();
-                                }),
-                              );
-                            },
-                            child: const Text('trance')),
-                        ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                widgetList.add(const Column(
-                                  children: [TodoView(), TextField()],
-                                ));
-                                print(widgetList.length);
-                              });
-                            },
-                            child: const Text('追加')),
-                      ],
-                    ),
                     Expanded(
                         child: SingleChildScrollView(
                       child: Column(children: widgetList),

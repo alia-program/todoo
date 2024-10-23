@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:todoo/main.dart';
 
 class TodoView extends StatefulWidget {
-  const TodoView({super.key});
+  TodoView({required this.items});
+  List<ItemData> items;
 
   @override
   State<TodoView> createState() => _TodoViewState();
@@ -11,23 +13,24 @@ class TodoView extends StatefulWidget {
 class ItemData {
   int id;
   String? text;
+  bool check;
 
   TextEditingController _controller;
   //コンストラクタの定型文
-  ItemData(this.id, this.text, this._controller);
+  ItemData(this.id, this.text, this._controller, this.check);
 }
 
 class _TodoViewState extends State<TodoView> {
-  final _items = <ItemData>[];
+  //final _items = <ItemData>[];
   //  //.generate(3, (index) => ItemData(index, '', TextEditingController(text: "")));
-  String content = "";
+
   int index = 0;
   int id = 0;
 
   //コントローラーの破棄
   @override
   void dispose() {
-    _items[index]._controller.dispose();
+    widget.items[index]._controller.dispose();
     super.dispose();
   }
 
@@ -35,9 +38,9 @@ class _TodoViewState extends State<TodoView> {
   @override
   void initState() {
     super.initState();
-    if (_items.isNotEmpty) {
-      _items[index]._controller =
-          TextEditingController(text: _items[index].text);
+    if (widget.items.isNotEmpty) {
+      widget.items[index]._controller =
+          TextEditingController(text: widget.items[index].text);
     }
   }
 
@@ -45,7 +48,7 @@ class _TodoViewState extends State<TodoView> {
   Widget build(BuildContext context) {
     return Container(
       height: 270,
-      margin: const EdgeInsets.all(10),
+      margin: const EdgeInsets.all(15),
       color: Colors.white,
       child: Column(
         children: [
@@ -55,11 +58,9 @@ class _TodoViewState extends State<TodoView> {
             child: Row(
               children: [
                 IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                  onPressed: () {},
                   icon: const Icon(Icons.close),
-                  color: const Color.fromRGBO(255, 255, 255, 1),
+                  color: Colors.white,
                   iconSize: 30,
                 ),
                 const Expanded(
@@ -79,7 +80,7 @@ class _TodoViewState extends State<TodoView> {
                     });
                   },
                   icon: const Icon(Icons.add),
-                  color: const Color.fromRGBO(255, 255, 255, 1),
+                  color: Colors.white,
                   iconSize: 35,
                 ),
               ],
@@ -95,12 +96,12 @@ class _TodoViewState extends State<TodoView> {
 
   void _removeItem(ItemData item) {
     setState(() {
-      _items.remove(item);
+      widget.items.remove(item);
     });
   }
 
   void _addItem() {
-    _items.add(ItemData(id++, '', TextEditingController()));
+    widget.items.add(ItemData(id++, '', TextEditingController(), false));
   }
 
   ReorderableListView _addListView() {
@@ -110,13 +111,13 @@ class _TodoViewState extends State<TodoView> {
           if (oldIndex < newIndex) {
             newIndex--;
           }
-          var item = _items.removeAt(oldIndex);
-          _items.insert(newIndex, item);
+          var item = widget.items.removeAt(oldIndex);
+          widget.items.insert(newIndex, item);
         });
       },
       //リストのアイテムたちを生成
       children: <Widget>[
-        for (var item in _items)
+        for (var item in widget.items)
           Slidable(
             key: ValueKey(item),
             endActionPane: ActionPane(
@@ -137,6 +138,14 @@ class _TodoViewState extends State<TodoView> {
               key: ValueKey(item),
               //複数のviewを配置
               children: <Widget>[
+                Checkbox(
+                    value: item.check,
+                    onChanged: (value) {
+                      setState(() {
+                        item.check = value!;
+                      });
+                    }),
+
                 //Expandedは最大限広げる
                 Expanded(
                   //Containerは色・サイズ・childを指定できる
@@ -155,7 +164,7 @@ class _TodoViewState extends State<TodoView> {
                       onChanged: (newText) {
                         setState(() {
                           item.text = newText;
-                          index = _items.indexOf(item);
+                          index = widget.items.indexOf(item);
                         });
                       },
                       focusNode: FocusNode(),
